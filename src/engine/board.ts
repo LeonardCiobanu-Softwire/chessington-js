@@ -47,4 +47,9 @@ export default class Board {
         }
         return board;
     }
+
+    public isSquareOccupied(square: Square) {
+        return this.board[square.row][square.col] !== undefined;
+    }
+
 }

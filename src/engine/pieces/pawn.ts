@@ -13,15 +13,17 @@ export default class Pawn extends Piece {
     public pawnUp(board: Board) {
         if (this.player == Player.WHITE) {
             return board.findPiece(this).squareUp();
-        } else {
+        } else if (this.player == Player.BLACK) {
             return board.findPiece(this).squareDown();
         }
+        return null;
     }
 
     public pawnTwoUp(board: Board) {
-        if (this.player == Player.WHITE && board.findPiece(this).row == 1) {
+        if (this.player == Player.WHITE && board.findPiece(this).row == 1 && !board.isSquareOccupied(board.findPiece(this).squareUp())) {
             return board.findPiece(this).squareUp().squareUp();
-        } else if (this.player == Player.BLACK && board.findPiece(this).row == GameSettings.BOARD_SIZE - 2) {
+        } else if (this.player == Player.BLACK && board.findPiece(this).row == GameSettings.BOARD_SIZE - 2 &&
+            !board.isSquareOccupied(board.findPiece(this).squareDown())) {
             return board.findPiece(this).squareDown().squareDown();
         }
         return null;
@@ -30,10 +32,13 @@ export default class Pawn extends Piece {
     public getAvailableMoves(board: Board) {
         // return new Array(0);
         let availableMoves: Square[] = [];
-        availableMoves.push(this.pawnUp(board));
+        let oneUp: Square | null = this.pawnUp(board);
+        if (oneUp)
+            availableMoves.push(oneUp);
         let twoUp = this.pawnTwoUp(board);
         if (twoUp)
             availableMoves.push(twoUp);
+        availableMoves = availableMoves.filter(move => !board.isSquareOccupied(move));
         return availableMoves;
     }
 }
