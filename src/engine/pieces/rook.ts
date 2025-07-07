@@ -9,19 +9,46 @@ export default class Rook extends Piece {
         super(player);
     }
 
+    private getHorizontalMoves(board: Board): Square[] {
+        let curPos: Square = board.findPiece(this);
+        let moves: Square[] = [];
+        for (let i: number = curPos.col - 1; i >= 0; i --) {
+            if (board.isSquareOccupied(Square.at(curPos.row, i))) {
+                break;
+            }
+            moves.push(Square.at(curPos.row, i));
+        }
+        for (let i: number = curPos.col + 1; i < GameSettings.BOARD_SIZE; i++) {
+            if (board.isSquareOccupied(Square.at(curPos.row, i))) {
+                break;
+            }
+            moves.push(Square.at(curPos.row, i));
+        }
+        return moves;
+    }
 
+    private getVerticalMoves(board: Board): Square[] {
+        let curPos: Square = board.findPiece(this);
+        let moves: Square[] = [];
+        for (let i: number = curPos.row - 1; i >= 0; i --) {
+            if (board.isSquareOccupied(Square.at(i, curPos.col))) {
+                break;
+            }
+            moves.push(Square.at(i, curPos.col));
+        }
+        for (let i: number = curPos.row + 1; i < GameSettings.BOARD_SIZE; i++) {
+            if (board.isSquareOccupied(Square.at(i, curPos.col))) {
+                break;
+            }
+            moves.push(Square.at(i, curPos.col));
+        }
+        return moves;
+    }
 
     public getAvailableMoves(board: Board) {
         let currentPosition: Square = board.findPiece(this);
-        let availableMoves: Square[] = [];
-        for (let i: number = 0; i < GameSettings.BOARD_SIZE; i++) {
-            if (i != currentPosition.row) {
-                availableMoves.push(Square.at(i, currentPosition.col));
-            }
-            if (i != currentPosition.col) {
-                availableMoves.push(Square.at(currentPosition.row, i));
-            }
-        }
+        let availableMoves: Square[] = this.getHorizontalMoves(board);
+        availableMoves = availableMoves.concat(this.getVerticalMoves(board));
         return availableMoves;
     }
 }
