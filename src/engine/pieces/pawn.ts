@@ -38,7 +38,7 @@ export default class Pawn extends Piece {
         let twoUp = this.pawnTwoUp(board);
         if (twoUp)
             availableMoves.push(twoUp);
-        availableMoves = availableMoves.filter(move => !board.isSquareOccupied(move));
+        availableMoves = availableMoves.filter(move => !board.isSquareOccupied(move) && board.isInBounds(move));
         return availableMoves;
     }
 }

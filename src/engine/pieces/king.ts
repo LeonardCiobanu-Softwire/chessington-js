@@ -23,13 +23,7 @@ export default class King extends Piece {
 
     public getAvailableMoves(board: Board) {
         let availableMoves: Square[] = this.getPossibleMoves(board.findPiece(this));
-        availableMoves = availableMoves.filter(
-            move =>
-                move.row < GameSettings.BOARD_SIZE &&
-                move.col < GameSettings.BOARD_SIZE &&
-                move.row > 0 &&
-                move.col > 0
-        );
+        availableMoves = availableMoves.filter(board.isInBounds);
         return availableMoves;
     }
 }

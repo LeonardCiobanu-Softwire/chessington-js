@@ -48,8 +48,12 @@ export default class Board {
         return board;
     }
 
+    public isInBounds(square: Square): boolean {
+        return square.row >= 0 && square.col >= 0 && square.col < GameSettings.BOARD_SIZE && square.row < GameSettings.BOARD_SIZE;
+    }
+
     public isSquareOccupied(square: Square) {
-        return this.board[square.row][square.col] !== undefined;
+        return this.isInBounds(square) && this.board[square.row][square.col] !== undefined;
     }
 
 }

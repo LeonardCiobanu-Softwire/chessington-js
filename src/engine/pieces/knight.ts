@@ -24,13 +24,7 @@ export default class Knight extends Piece {
         let currentPosition: Square = board.findPiece(this);
 
         let availableMoves: Square[] = this.getPossibleMoves(currentPosition);
-        availableMoves = availableMoves.filter(
-            move =>
-                move.row < GameSettings.BOARD_SIZE &&
-                move.col < GameSettings.BOARD_SIZE &&
-                move.row > 0 &&
-                move.col > 0
-        );
+        availableMoves = availableMoves.filter(board.isInBounds);
         return availableMoves;
     }
 }
