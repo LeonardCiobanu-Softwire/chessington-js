@@ -6,7 +6,7 @@ import Square from "../square";
 
 export default class Queen extends Piece {
     public constructor(player: Player) {
-        super(player);
+        super("queen", player);
     }
 
     private getLateralMoves(board: Board): Square[] {

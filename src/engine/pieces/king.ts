@@ -6,7 +6,7 @@ import GameSettings from "../gameSettings";
 
 export default class King extends Piece {
     public constructor(player: Player) {
-        super(player);
+        super("king", player);
     }
 
     private getPossibleMoves(currentPosition: Square) {

@@ -6,7 +6,7 @@ import GameSettings from "../gameSettings";
 
 export default class Bishop extends Piece {
     public constructor(player: Player) {
-        super(player);
+        super("bishop", player);
     }
 
     public getMainDiagonalMoves(board: Board) {

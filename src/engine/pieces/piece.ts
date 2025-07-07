@@ -4,9 +4,11 @@ import Square from '../square';
 
 export default class Piece {
     public player: Player;
+    public pieceType: string;
 
-    public constructor(player: Player) {
+    public constructor(pieceType: string, player: Player) {
         this.player = player;
+        this.pieceType = pieceType;
     }
 
     public getAvailableMoves(board: Board) {
