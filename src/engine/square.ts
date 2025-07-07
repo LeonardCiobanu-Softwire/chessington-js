@@ -18,4 +18,20 @@ export default class Square {
     public toString() {
         return `Row ${this.row}, Col ${this.col}`;
     }
+
+    public squareUp() {
+        return Square.at(this.row + 1, this.col);
+    }
+
+    public squareDown() {
+        return Square.at(this.row - 1, this.col);
+    }
+
+    public squareLeft() {
+        return Square.at(this.row, this.col + 1);
+    }
+
+    public squareRight() {
+        return Square.at(this.row, this.col - 1);
+    }
 }
