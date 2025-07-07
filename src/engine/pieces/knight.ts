@@ -24,7 +24,14 @@ export default class Knight extends Piece {
         let currentPosition: Square = board.findPiece(this);
 
         let availableMoves: Square[] = this.getPossibleMoves(currentPosition);
-        availableMoves = availableMoves.filter(board.isInBounds);
+        availableMoves = availableMoves.filter(move => {
+            if (!board.isSquareOccupied(move)) return board.isInBounds(move);
+            let blockingPiece: Piece | undefined = board.getPiece(move);
+            let player: boolean = blockingPiece?.player !== this.player;
+            let king: boolean = blockingPiece?.pieceType !== "king";
+
+            return board.isInBounds(move) && blockingPiece && player && king;
+        } );
         return availableMoves;
     }
 }
