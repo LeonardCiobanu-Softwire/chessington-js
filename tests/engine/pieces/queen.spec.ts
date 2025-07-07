@@ -8,7 +8,7 @@ import Square from '../../../src/engine/square';
 import GameSettings from '../../../src/engine/gameSettings';
 
 describe('Queen', () => {
-
+    // Am uitat sa fac alt branch pt PR :)
     let board: Board;
     beforeEach(() => board = new Board());
 
