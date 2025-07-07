@@ -9,23 +9,31 @@ export default class Bishop extends Piece {
         super(player);
     }
 
-    public getMainDiagonalMoves(currentPosition: Square) {
+    public getMainDiagonalMoves(board: Board) {
+        let currentPosition = board.findPiece(this);
         let availableMoves: Square[] = [];
-        for (let i = currentPosition.row + 1, j  = currentPosition.col + 1; i < GameSettings.BOARD_SIZE && j < GameSettings.BOARD_SIZE; i++, j++) {
+        for (let i = currentPosition.row + 1, j  = currentPosition.col + 1; i < GameSettings.BOARD_SIZE && j < GameSettings.BOARD_SIZE
+            && !board.isSquareOccupied(Square.at(i, j)); i++, j++) {
+
             availableMoves.push(Square.at(i, j));
         }
-        for (let i = currentPosition.row - 1, j  = currentPosition.col - 1; i >= 0 && j >= 0; i--, j--) {
+        for (let i = currentPosition.row - 1, j  = currentPosition.col - 1; i >= 0 && j >= 0
+            && !board.isSquareOccupied(Square.at(i, j)); i--, j--) {
+
             availableMoves.push(Square.at(i, j));
         }
         return availableMoves;
     }
 
-    public getSecDiagonalMoves(currentPosition: Square) {
+    public getSecDiagonalMoves(board:Board) {
+        let currentPosition = board.findPiece(this);
         let availableMoves: Square[] = [];
-        for (let i = currentPosition.row + 1, j  = currentPosition.col - 1; i < GameSettings.BOARD_SIZE && j >= 0; i++, j--) {
+        for (let i = currentPosition.row + 1, j  = currentPosition.col - 1; i < GameSettings.BOARD_SIZE && j >= 0
+            && !board.isSquareOccupied(Square.at(i, j)); i++, j--) {
             availableMoves.push(Square.at(i, j));
         }
-        for (let i = currentPosition.row - 1, j  = currentPosition.col + 1; j < GameSettings.BOARD_SIZE && i >= 0; i--, j++) {
+        for (let i = currentPosition.row - 1, j  = currentPosition.col + 1; j < GameSettings.BOARD_SIZE && i >= 0
+            && !board.isSquareOccupied(Square.at(i, j)); i--, j++) {
             availableMoves.push(Square.at(i, j));
         }
         return availableMoves;
@@ -34,9 +42,9 @@ export default class Bishop extends Piece {
     public getAvailableMoves(board: Board) {
         let currentPosition: Square = board.findPiece(this);
 
-        let availableMoves: Square[] = this.getMainDiagonalMoves(currentPosition)
+        let availableMoves: Square[] = this.getMainDiagonalMoves(board)
 
-        availableMoves = availableMoves.concat(this.getSecDiagonalMoves(currentPosition));
+        availableMoves = availableMoves.concat(this.getSecDiagonalMoves(board));
 
         return availableMoves;
     }
