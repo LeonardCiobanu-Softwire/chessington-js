@@ -9,46 +9,69 @@ export default class Queen extends Piece {
         super(player);
     }
 
-    public getLateralMoves(currentPosition: Square): Square[] {
-        let availableMoves: Square[] = [];
-        for (let i: number = 0; i < GameSettings.BOARD_SIZE; i++) {
-            if (i != currentPosition.row) {
-                availableMoves.push(Square.at(i, currentPosition.col));
+    private getLateralMoves(board: Board): Square[] {
+        let curPos: Square = board.findPiece(this);
+        let moves: Square[] = [];
+        function getHorizontalMoves(){
+            for (let i: number = curPos.col - 1; i >= 0 && !board.isSquareOccupied(Square.at(curPos.row, i)); i --) {
+                moves.push(Square.at(curPos.row, i));
             }
-            if (i != currentPosition.col) {
-                availableMoves.push(Square.at(currentPosition.row, i));
+            for (let i: number = curPos.col + 1; i < GameSettings.BOARD_SIZE && !board.isSquareOccupied(Square.at(curPos.row, i)); i++) {
+                moves.push(Square.at(curPos.row, i));
             }
         }
-        return availableMoves;
+
+        function getVerticalMoves(){
+            for (let i: number = curPos.row - 1; i >= 0 && !board.isSquareOccupied(Square.at(i, curPos.col)); i --) {
+                moves.push(Square.at(i, curPos.col));
+            }
+            for (let i: number = curPos.row + 1; i < GameSettings.BOARD_SIZE && !board.isSquareOccupied(Square.at(i, curPos.col)); i++) {
+                moves.push(Square.at(i, curPos.col));
+            }
+        }
+        getVerticalMoves();
+        getHorizontalMoves();
+        return moves;
     }
 
-    public getMainDiagonalMoves(currentPosition: Square) {
-        let availableMoves: Square[] = [];
-        for (let i = currentPosition.row + 1, j  = currentPosition.col + 1; i < GameSettings.BOARD_SIZE && j < GameSettings.BOARD_SIZE; i++, j++) {
-            availableMoves.push(Square.at(i, j));
-        }
-        for (let i = currentPosition.row - 1, j  = currentPosition.col - 1; i >= 0 && j >= 0; i--, j--) {
-            availableMoves.push(Square.at(i, j));
-        }
-        return availableMoves;
-    }
+    private getDiagonalMoves(board: Board): Square[] {
+        let curPos: Square = board.findPiece(this);
+        let moves: Square[] = [];
+        function getMainDiagonalMoves() {
 
-    public getSecDiagonalMoves(currentPosition: Square) {
-        let availableMoves: Square[] = [];
-        for (let i = currentPosition.row + 1, j  = currentPosition.col - 1; i < GameSettings.BOARD_SIZE && j >= 0; i++, j--) {
-            availableMoves.push(Square.at(i, j));
+            for (let i = curPos.row + 1, j  = curPos.col + 1; i < GameSettings.BOARD_SIZE && j < GameSettings.BOARD_SIZE
+                && !board.isSquareOccupied(Square.at(i, j)); i++, j++) {
+
+                moves.push(Square.at(i, j));
+            }
+            for (let i = curPos.row - 1, j  = curPos.col - 1; i >= 0 && j >= 0
+                && !board.isSquareOccupied(Square.at(i, j)); i--, j--) {
+
+                moves.push(Square.at(i, j));
+            }
         }
-        for (let i = currentPosition.row - 1, j  = currentPosition.col + 1; j < GameSettings.BOARD_SIZE && i >= 0; i--, j++) {
-            availableMoves.push(Square.at(i, j));
+
+        function getSecDiagonalMoves() {
+            for (let i = curPos.row + 1, j  = curPos.col - 1; i < GameSettings.BOARD_SIZE && j >= 0
+                && !board.isSquareOccupied(Square.at(i, j)); i++, j--) {
+                moves.push(Square.at(i, j));
+            }
+            for (let i = curPos.row - 1, j  = curPos.col + 1; j < GameSettings.BOARD_SIZE && i >= 0
+                && !board.isSquareOccupied(Square.at(i, j)); i--, j++) {
+                moves.push(Square.at(i, j));
+            }
+            return moves;
         }
-        return availableMoves;
+        getMainDiagonalMoves();
+        getSecDiagonalMoves();
+        return moves;
     }
 
     public getAvailableMoves(board: Board) {
-        let currentPosition: Square = board.findPiece(this);
-        let availableMoves: Square[] = this.getLateralMoves(currentPosition);
-        availableMoves = availableMoves.concat(this.getMainDiagonalMoves(currentPosition));
-        availableMoves = availableMoves.concat(this.getSecDiagonalMoves(currentPosition));
+        let curPos
+: Square = board.findPiece(this);
+        let availableMoves: Square[] = this.getLateralMoves(board);
+        availableMoves = availableMoves.concat(this.getDiagonalMoves(board));
         return availableMoves;
     }
 }
